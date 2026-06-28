@@ -70,27 +70,29 @@ def getWeather(event=None):
 
 # defining the application canvas
 app=ctk.CTk()
-app.geometry("360x640")
+app.geometry("430x832")
 app.resizable(False,False)
 app.title("Weather Watch")
 app.iconbitmap("res/app_icon.ico")
 ctk.set_appearance_mode("light")
 
-# setting background to white
-app.config(background="#F5F5F5")
+white_code="#F2F2F7"
 
-#defining the fonts
-f=("poppins",25,"bold")
-t=("poppins",13,"bold")
+# setting background to white
+app.config(background=white_code)
+
+# defining the fonts
+f=("Segoe UI", 24, "bold")
+t=("Segoe UI", 13,)
 
 # building first container and respective elements
-container1=ctk.CTkFrame(app,width=310,height=280,fg_color="gray",bg_color="transparent",corner_radius=12)
+container1=ctk.CTkFrame(app,width=310,height=280,fg_color="#e1e1e3",bg_color=white_code,corner_radius=12)
 container1.pack(pady=20,padx=10)
 container1.pack_propagate(False)
 
 # city label
 city_label=ctk.CTkLabel(container1,text="City Name",font=f)
-city_label.pack(pady=10)
+city_label.pack(pady=20)
 
 # creating Ctk image for weather icons
 currW_img=ctk.CTkImage(
@@ -99,19 +101,19 @@ currW_img=ctk.CTkImage(
         size=(90,90)
     )
 currWeather=ctk.CTkLabel(container1,text="",image=currW_img)
-currWeather.pack(pady=10)
+currWeather.pack(pady=5)
 
 # current temp
 currTemp=ctk.CTkLabel(container1,text="Current Weather",font=f)
-currTemp.pack(pady=10)
+currTemp.pack(pady=5)
 
 # current weather description
 description=ctk.CTkLabel(container1,text="Description",font=f)
-description.pack(pady=10)
+description.pack(pady=5)
 
 
 # building second container for holding data
-gridContainer=ctk.CTkFrame(app,fg_color="gray",width=320,height=230,corner_radius=12)
+gridContainer=ctk.CTkFrame(app,fg_color="#e1e1e3",bg_color=white_code,width=320,height=230,corner_radius=12)
 gridContainer.pack(pady=5)
 gridContainer.grid_propagate(False)
 gridContainer.grid_rowconfigure((0,1,2),weight=1)
@@ -144,21 +146,23 @@ pressure.grid(row=2,column=1,padx=40,pady=10,sticky="nsew")
 
 
 # building a bottom bar
-bottom_bar=ctk.CTkFrame(app,bg_color="transparent")
-bottom_bar.pack(side="bottom",pady=20)
+bottom_bar=ctk.CTkFrame(app,width=180,height=40,fg_color="#e1e1e3",bg_color=white_code,corner_radius=30)
+# bottom_bar.pack(side="bottom",pady=20)
+bottom_bar.place(relx=0.5, rely=0.96, anchor="s")
+bottom_bar.pack_propagate(False)
 
 # placeholder
 home_icon=load_icon("res/icons/home.png",size=(28,28))
 home=ctk.CTkLabel(bottom_bar,text="",image=home_icon,font=f,cursor="hand2")
-home.pack(side="left",pady=10,padx=20)
+home.pack(side="left",pady=10,padx=20,expand=True)
 
 search_icon=load_icon("res/icons/search.png",size=(28,28))
 search=ctk.CTkLabel(bottom_bar,text="",image=search_icon, font=f,cursor="hand2")
-search.pack(side="left",pady=10,padx=20)
+search.pack(side="left",pady=10,padx=20,expand=True)
 
 
 # building a hidden city input bar
-city_entry=ctk.CTkEntry(app,placeholder_text="Input city name",width=220)
+city_entry=ctk.CTkEntry(app,placeholder_text="Input city name",width=220,corner_radius=20,bg_color="#e1e1e3",justify="center")
 city_entry.place(x=70,y=40)
 city_entry.place_forget()
 
@@ -174,6 +178,12 @@ def submit_city(event=None):
 def open_search(Event=None):
     city_entry.place(x=70,y=40)
     city_entry.focus_set()
+    # Clear any previous text
+    city_entry.delete(0, "end")
+    # Move the cursor to the entry and give it keyboard focus
+    city_entry.focus_force()
+    # Ensure the insertion cursor is at the beginning
+    city_entry.icursor(0)
 
 city_entry.bind("<Return>",submit_city)
 # weather refresh    
